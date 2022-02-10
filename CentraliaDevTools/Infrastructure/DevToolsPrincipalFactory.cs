@@ -22,17 +22,7 @@ namespace TodoApp.Infrastructure
 
             var claims = new List<Claim>();
 
-            // validate it
-            if (true)
-            {
-                claims.Add(new Claim("CustomClaim", "some thing"));
-            }
-            else
-            {
-                claims.Add(new Claim("CustomClaim", "some other thing"));
-            }
-
-            // add our claims
+            claims.Add(new Claim("userID", user.Id));
 
             identity.AddClaims(claims);
 

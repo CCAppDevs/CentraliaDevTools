@@ -1,4 +1,5 @@
 ﻿using CentraliaDevTools.Areas.Identity.Data;
+using CentraliaDevTools.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ public class DevToolsContext : IdentityDbContext<DevToolsUser>
         : base(options)
     {
     }
+
+    public DbSet<TeamProject> TeamProjects { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
