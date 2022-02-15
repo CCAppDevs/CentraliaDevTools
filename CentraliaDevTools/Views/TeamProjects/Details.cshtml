@@ -20,7 +20,13 @@
             @Html.DisplayNameFor(model => model.Lead)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lead.Id)
+            @Html.DisplayFor(model => model.Lead.UserName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lead.PhoneNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lead.PhoneNumber)
         </dd>
     </dl>
 </div>

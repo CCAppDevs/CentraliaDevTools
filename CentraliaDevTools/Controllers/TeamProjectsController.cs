@@ -50,7 +50,7 @@ namespace CentraliaDevTools.Controllers
         // GET: TeamProjects/Create
         public IActionResult Create()
         {
-            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
@@ -67,7 +67,7 @@ namespace CentraliaDevTools.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "Id", teamProject.LeadId);
+            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "UserName", teamProject.LeadId);
             return View(teamProject);
         }
 
@@ -84,7 +84,7 @@ namespace CentraliaDevTools.Controllers
             {
                 return NotFound();
             }
-            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "Id", teamProject.LeadId);
+            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "UserName", teamProject.LeadId);
             return View(teamProject);
         }
 
@@ -120,7 +120,7 @@ namespace CentraliaDevTools.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "Id", teamProject.LeadId);
+            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "UserName", teamProject.LeadId);
             return View(teamProject);
         }
 
