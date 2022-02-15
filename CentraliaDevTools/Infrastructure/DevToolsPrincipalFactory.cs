@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
-namespace TodoApp.Infrastructure
+namespace CentraliaDevTools.Infrastructure
 {
     public class DevToolsPrincipalFactory : UserClaimsPrincipalFactory<DevToolsUser, IdentityRole>
     {

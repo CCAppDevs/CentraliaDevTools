@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CentraliaDevTools.Data;
 using CentraliaDevTools.Areas.Identity.Data;
-using TodoApp.Infrastructure;
+using CentraliaDevTools.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DevToolsContextConnection");
@@ -15,6 +15,8 @@ builder.Services.AddDefaultIdentity<DevToolsUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<DevToolsContext>();
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<DevToolsUser>, DevToolsPrincipalFactory>();
+builder.Services.AddScoped<ITicketService, TicketService>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
