@@ -4,5 +4,7 @@
     {
         string GetRandomUserID();
         string GetUserIDByName(string userName);
+
+        void SendNotification();
     }
 }

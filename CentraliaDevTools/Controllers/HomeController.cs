@@ -19,6 +19,7 @@ namespace CentraliaDevTools.Controllers
         public IActionResult Index()
         {
             ViewData["RandomID"] = _ticketService.GetRandomUserID();
+            ViewData["JesseID"] = _ticketService.GetUserIDByName("jesse@jesse.com");
             return View();
         }
 
