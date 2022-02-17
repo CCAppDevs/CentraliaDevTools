@@ -16,15 +16,21 @@ namespace CentraliaDevTools.Infrastructure
         {
             int count = _context.Users.Count();
             int index = new Random().Next(count);
+            var user = _context.Users.Skip(index).FirstOrDefault();
 
-            return _context.Users.Skip(index).FirstOrDefault().Id;
+            if (count == 0)
+            {
+                return "";
+            }
+
+            return user.Id;
             // return _context.Users.OrderBy(r => Guid.NewGuid()).First().Id;
         }
 
         public string GetUserIDByName(string userName)
         {
             DevToolsUser user = _context.Users.Where(u => u.UserName == userName).FirstOrDefault();
-            return user.Id;
+            return user != null ? user.Id : "";
         }
 
         public void SendNotification()
