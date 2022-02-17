@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentraliaDevTools.Migrations
 {
     [DbContext(typeof(DevToolsContext))]
-    partial class DevToolsContextModelSnapshot : ModelSnapshot
+    [Migration("20220217181056_memberships")]
+    partial class memberships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,7 +130,7 @@ namespace CentraliaDevTools.Migrations
 
                     b.HasIndex("TeamProjectId");
 
-                    b.ToTable("Memberships");
+                    b.ToTable("TeamProjectMember");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -271,7 +273,7 @@ namespace CentraliaDevTools.Migrations
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>
                 {
                     b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Lead")
-                        .WithMany("OwnedProjects")
+                        .WithMany()
                         .HasForeignKey("LeadId");
 
                     b.Navigation("Lead");
@@ -348,8 +350,6 @@ namespace CentraliaDevTools.Migrations
             modelBuilder.Entity("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", b =>
                 {
                     b.Navigation("Memberships");
-
-                    b.Navigation("OwnedProjects");
                 });
 
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>

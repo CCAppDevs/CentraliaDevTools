@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using CentraliaDevTools.Data;
 using CentraliaDevTools.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using CentraliaDevTools.Areas.Identity.Data;
 
 namespace CentraliaDevTools.Controllers
 {
@@ -15,16 +17,19 @@ namespace CentraliaDevTools.Controllers
     public class TeamProjectsController : Controller
     {
         private readonly DevToolsContext _context;
+        private readonly UserManager<DevToolsUser> _userManager;
 
-        public TeamProjectsController(DevToolsContext context)
+        public TeamProjectsController(DevToolsContext context, UserManager<DevToolsUser> usrMgr)
         {
             _context = context;
+            _userManager = usrMgr;
         }
 
         // GET: TeamProjects
         public async Task<IActionResult> Index()
         {
-            var devToolsContext = _context.TeamProjects.Include(t => t.Lead);
+            var user = await _userManager.GetUserAsync(User);
+            var devToolsContext = _context.TeamProjects.Include(t => t.Lead).Where(p => p.LeadId == user.Id);
             return View(await devToolsContext.ToListAsync());
         }
 
@@ -48,9 +53,10 @@ namespace CentraliaDevTools.Controllers
         }
 
         // GET: TeamProjects/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "UserName");
+            var user = await _userManager.GetUserAsync(User);
+            ViewData["LeadId"] = user.Id;
             return View();
         }
 

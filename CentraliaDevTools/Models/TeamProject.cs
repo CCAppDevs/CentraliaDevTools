@@ -10,6 +10,6 @@ namespace CentraliaDevTools.Models
         public string Name { get; set; }
         public string LeadId { get; set; }
         public DevToolsUser Lead { get; set; }
-        public List<DevToolsUser> Members { get; set; }
+        public List<TeamProjectMember> Memberships { get; set; }
     }
 }

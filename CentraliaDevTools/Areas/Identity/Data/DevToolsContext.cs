@@ -14,6 +14,7 @@ public class DevToolsContext : IdentityDbContext<DevToolsUser>
     }
 
     public DbSet<TeamProject> TeamProjects { get; set; }
+    public DbSet<TeamProjectMember> Memberships { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
