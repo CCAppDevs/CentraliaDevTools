@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using CentraliaDevTools.Data;
 using CentraliaDevTools.Areas.Identity.Data;
 using CentraliaDevTools.Infrastructure;
+using CentraliaDevTools.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DevToolsContextConnection");
@@ -22,6 +23,13 @@ builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    
+   await SeedData.CreateAdminAccount(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
