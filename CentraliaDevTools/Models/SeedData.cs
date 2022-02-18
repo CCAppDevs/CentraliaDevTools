@@ -10,15 +10,10 @@ namespace CentraliaDevTools.Models
             UserManager<DevToolsUser> userManager = serviceProvider.GetRequiredService<UserManager<DevToolsUser>>();
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string username = "Admin";
+            string username = "admin@site.com";
             string email = "admin@site.com";
-            string password = "password";
+            string password = "123Secret!"; // must follow password guidelines
             string role = "Admins";
-
-            //string username = configuration["Data:AdminUser:Name"];
-            //string email = configuration["Data:AdminUser:Email"];
-            //string password = configuration["Data:AdminUser:Password"];
-            //string role = configuration["Data:AdminUser:Role"];
 
             if (await userManager.FindByNameAsync(username) == null)
             {
