@@ -12,5 +12,6 @@ public class DevToolsUser : IdentityUser
 {
     public List<TeamProject> OwnedProjects { get; set; }
     public List<TeamProjectMember> Memberships { get; set; }
+    public List<TicketMember> TicketMembers { get; set; }
 }
 
