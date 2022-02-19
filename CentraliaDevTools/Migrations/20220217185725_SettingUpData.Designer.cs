@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentraliaDevTools.Migrations
 {
     [DbContext(typeof(DevToolsContext))]
-    partial class DevToolsContextModelSnapshot : ModelSnapshot
+    [Migration("20220217185725_SettingUpData")]
+    partial class SettingUpData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,54 +131,6 @@ namespace CentraliaDevTools.Migrations
                     b.HasIndex("TeamProjectId");
 
                     b.ToTable("Memberships");
-                });
-
-            modelBuilder.Entity("CentraliaDevTools.Models.Ticket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ticket");
-                });
-
-            modelBuilder.Entity("CentraliaDevTools.Models.TicketMember", b =>
-                {
-                    b.Property<int>("TicketMemberID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketMemberID"), 1L, 1);
-
-                    b.Property<string>("MemberId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("TicketId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TicketMemberID");
-
-                    b.HasIndex("MemberId");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("TicketMembers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -342,23 +296,6 @@ namespace CentraliaDevTools.Migrations
                     b.Navigation("TeamProject");
                 });
 
-            modelBuilder.Entity("CentraliaDevTools.Models.TicketMember", b =>
-                {
-                    b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Member")
-                        .WithMany("TicketMembers")
-                        .HasForeignKey("MemberId");
-
-                    b.HasOne("CentraliaDevTools.Models.Ticket", "Ticket")
-                        .WithMany("TicketMembers")
-                        .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Member");
-
-                    b.Navigation("Ticket");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -415,18 +352,11 @@ namespace CentraliaDevTools.Migrations
                     b.Navigation("Memberships");
 
                     b.Navigation("OwnedProjects");
-
-                    b.Navigation("TicketMembers");
                 });
 
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>
                 {
                     b.Navigation("Memberships");
-                });
-
-            modelBuilder.Entity("CentraliaDevTools.Models.Ticket", b =>
-                {
-                    b.Navigation("TicketMembers");
                 });
 #pragma warning restore 612, 618
         }
