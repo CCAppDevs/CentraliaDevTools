@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using CentraliaDevTools.Data;
 using CentraliaDevTools.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using CentraliaDevTools.Areas.Identity.Data;
 
 namespace CentraliaDevTools.Controllers
 {
@@ -15,15 +17,27 @@ namespace CentraliaDevTools.Controllers
     public class TicketsController : Controller
     {
         private readonly DevToolsContext _context;
+        private readonly UserManager<DevToolsUser> _userManager;
 
-        public TicketsController(DevToolsContext context)
+        public TicketsController(DevToolsContext context, UserManager<DevToolsUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Tickets
+
+        // Revision ~ Sam Miller, Feb 20: Limit tickets shown to only those the current user is a member of
+
         public async Task<IActionResult> Index()
         {
+            // Get current user
+            var user = await _userManager.GetUserAsync(User);
+
+            // Filter tickets to just those that the currently logged in user is a part of (in the TicketMembers list)
+            var filteredContext = _context.Ticket.Include(t => t.TicketMembers).Where(ticket => ticket.TicketMembers.Any(m => m.Member == user));
+
+            // Pass filtered data to the view
             return View(await _context.Ticket.ToListAsync());
         }
 

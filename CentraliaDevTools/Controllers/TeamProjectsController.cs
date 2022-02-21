@@ -29,8 +29,8 @@ namespace CentraliaDevTools.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var devToolsContext = _context.TeamProjects.Include(t => t.Lead).Where(p => p.LeadId == user.Id);
-            return View(await devToolsContext.ToListAsync());
+            var devToolsContext = _context.TeamProjects.Include(t => t.Memberships).Where(project => project.Memberships.Any(m => m.Member == user));
+            return View(await _context.TeamProjects.ToListAsync());
         }
 
         // GET: TeamProjects/Details/5
