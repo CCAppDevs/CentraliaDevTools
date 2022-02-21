@@ -35,10 +35,14 @@ namespace CentraliaDevTools.Controllers
             var user = await _userManager.GetUserAsync(User);
 
             // Filter tickets to just those that the currently logged in user is a part of (in the TicketMembers list)
-            var filteredContext = _context.Ticket.Include(t => t.TicketMembers).Where(ticket => ticket.TicketMembers.Any(m => m.Member == user));
+            var filteredContext = _context.Ticket.Include(t => t.TicketMembers).Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id));
+
+            //var data = _context.TicketMembers.Where(tm => tm.MemberId == user.Id).Include(tm => tm.Ticket);
+
+            //List<Ticket> filteredContext = data.SelectMany(x => x.Ticket).ToList();
 
             // Pass filtered data to the view
-            return View(await _context.Ticket.ToListAsync());
+            return View(await filteredContext.ToListAsync());
         }
 
         // GET: Tickets/Details/5
@@ -50,7 +54,7 @@ namespace CentraliaDevTools.Controllers
             }
 
             var ticket = await _context.Ticket
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.TicketID == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -70,7 +74,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Location,Description,CreatedOn")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("TicketID,Name,Location,Description,CreatedOn")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -102,9 +106,9 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("TicketID,Name,Location,Description,CreatedOn")] Ticket ticket)
         {
-            if (id != ticket.Id)
+            if (id != ticket.TicketID)
             {
                 return NotFound();
             }
@@ -118,7 +122,7 @@ namespace CentraliaDevTools.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TicketExists(ticket.Id))
+                    if (!TicketExists(ticket.TicketID))
                     {
                         return NotFound();
                     }
@@ -141,7 +145,7 @@ namespace CentraliaDevTools.Controllers
             }
 
             var ticket = await _context.Ticket
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.TicketID == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -163,7 +167,7 @@ namespace CentraliaDevTools.Controllers
 
         private bool TicketExists(int id)
         {
-            return _context.Ticket.Any(e => e.Id == id);
+            return _context.Ticket.Any(e => e.TicketID == id);
         }
     }
 }
