@@ -38,7 +38,7 @@ namespace CentraliaDevTools.Controllers
             var filteredContext = _context.Ticket.Include(t => t.TicketMembers).Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id));
 
             // Pass filtered data to the view
-            return View(await _context.Ticket.ToListAsync());
+            return View(await filteredContext.ToListAsync());
         }
 
         // GET: Tickets/Details/5
