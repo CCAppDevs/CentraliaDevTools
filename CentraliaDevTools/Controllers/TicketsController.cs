@@ -38,7 +38,7 @@ namespace CentraliaDevTools.Controllers
             var filteredContext = _context.Ticket.Include(t => t.TicketMembers).Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id));
 
             // Pass filtered data to the view
-            return View(await filteredContext.ToListAsync());
+            return View(await _context.Ticket.ToListAsync());
         }
 
         // GET: Tickets/Details/5
@@ -70,12 +70,25 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Location,Description,CreatedOn")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("TicketID,Name,Location,Description,CreatedOn")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                // Add ticket to database
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
+
+                // Add a new TicketMember entry with referencing appropriate ticket and member IDs
+                var user = await _userManager.GetUserAsync(User);
+                TicketMember tm = new TicketMember();
+
+                tm.TicketId = ticket.Id; // ID of new ticket
+                tm.MemberId = user.Id;   // ID of currently logged in user
+
+                // Add ticketmember to database
+                _context.Add(tm);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(ticket);
