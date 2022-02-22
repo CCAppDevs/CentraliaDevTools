@@ -78,8 +78,21 @@ namespace CentraliaDevTools.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Add ticket to database
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
+
+                // Add a new TicketMember entry with referencing appropriate ticket and member IDs
+                var user = await _userManager.GetUserAsync(User);
+                TicketMember tm = new TicketMember();
+
+                tm.TicketId = ticket.TicketID; // ID of new ticket
+                tm.MemberId = user.Id;         // ID of currently logged in user
+
+                // Add ticketmember to database
+                _context.Add(tm);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(ticket);
