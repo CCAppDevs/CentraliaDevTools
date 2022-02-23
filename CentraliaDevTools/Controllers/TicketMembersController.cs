@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CentraliaDevTools.Data;
 using CentraliaDevTools.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CentraliaDevTools.Controllers
 {
+    [Authorize]
     public class TicketMembersController : Controller
     {
         private readonly DevToolsContext _context;
@@ -49,7 +51,7 @@ namespace CentraliaDevTools.Controllers
         // GET: TicketMembers/Create
         public IActionResult Create()
         {
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "UserName");
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Id");
             return View();
         }
@@ -67,7 +69,7 @@ namespace CentraliaDevTools.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id", ticketMember.MemberId);
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "UserName", ticketMember.MemberId);
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Id", ticketMember.TicketId);
             return View(ticketMember);
         }
@@ -85,7 +87,7 @@ namespace CentraliaDevTools.Controllers
             {
                 return NotFound();
             }
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id", ticketMember.MemberId);
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "UserName", ticketMember.MemberId);
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Id", ticketMember.TicketId);
             return View(ticketMember);
         }
@@ -122,7 +124,7 @@ namespace CentraliaDevTools.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id", ticketMember.MemberId);
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "UserName", ticketMember.MemberId);
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Id", ticketMember.TicketId);
             return View(ticketMember);
         }
