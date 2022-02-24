@@ -33,6 +33,7 @@ namespace CentraliaDevTools.Controllers
             return View(await devToolsContext.ToListAsync());
         }
 
+        
         // GET: TeamProjects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -77,6 +78,7 @@ namespace CentraliaDevTools.Controllers
             return View(teamProject);
         }
 
+        //[Authorize(Policy = "ProjectMembersOrAdmins")]
         // GET: TeamProjects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -94,6 +96,7 @@ namespace CentraliaDevTools.Controllers
             return View(teamProject);
         }
 
+        //[Authorize(Policy = "ProjectMembersOrAdmins")]
         // POST: TeamProjects/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -130,6 +133,7 @@ namespace CentraliaDevTools.Controllers
             return View(teamProject);
         }
 
+        //[Authorize(Policy = "ProjectMembersOrAdmins")]
         // GET: TeamProjects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -149,6 +153,7 @@ namespace CentraliaDevTools.Controllers
             return View(teamProject);
         }
 
+        //[Authorize(Policy = "ProjectMembersOrAdmins")]
         // POST: TeamProjects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
