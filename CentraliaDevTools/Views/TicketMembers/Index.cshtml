@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<CentraliaDevTools.Models.TicketMember>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "TicketMembers";
 }
 
-<h1>Index</h1>
+<h1>TicketMembers</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -28,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Ticket.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Member.Id)
+                @Html.DisplayFor(modelItem => item.Member.UserName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TicketMemberID">Edit</a> |

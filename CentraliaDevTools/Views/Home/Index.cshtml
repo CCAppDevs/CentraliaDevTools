@@ -5,14 +5,18 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <p>random user = @ViewData["RandomID"]</p>
-    <p>jesse@jesse.com id = @ViewData["JesseID"]</p>
+    <environment include="Development,Staging">
+        <p>random user = @ViewData["RandomID"]</p>
+        <p>jesse@jesse.com id = @ViewData["JesseID"]</p>
+    </environment>
 </div>
 
-<h3>Current Claims</h3>
-<ul>
-    @foreach (var claim in User.Claims)
-    {
-        <li>@claim.Type - @claim.Value</li>
-    }
-</ul>
+<environment exclude="Production">
+    <h3>Current Claims</h3>
+    <ul>
+        @foreach (var claim in User.Claims)
+        {
+            <li>@claim.Type - @claim.Value</li>
+        }
+    </ul>
+</environment>
