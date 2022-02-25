@@ -85,7 +85,10 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
-            var teamProject = await _context.TeamProjects.FindAsync(id);
+            var teamProject = _context.TeamProjects.Include(t => t.Name).Where(t => t.TeamProjectID == id).FirstOrDefault();
+                
+                //await _context.TeamProjects.FindAsync(id);
+
             if (teamProject == null)
             {
                 return NotFound();

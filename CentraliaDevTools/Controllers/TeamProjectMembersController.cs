@@ -81,11 +81,12 @@ namespace CentraliaDevTools.Controllers
             }
 
             var teamProjectMember = await _context.Memberships.FindAsync(id);
+            
             if (teamProjectMember == null)
             {
                 return NotFound();
             }
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id", teamProjectMember.MemberId);
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Name", teamProjectMember.MemberId);
             ViewData["TeamProjectId"] = new SelectList(_context.TeamProjects, "TeamProjectID", "TeamProjectID", teamProjectMember.TeamProjectId);
             return View(teamProjectMember);
         }
@@ -122,7 +123,7 @@ namespace CentraliaDevTools.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id", teamProjectMember.MemberId);
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Name", teamProjectMember.MemberId);
             ViewData["TeamProjectId"] = new SelectList(_context.TeamProjects, "TeamProjectID", "TeamProjectID", teamProjectMember.TeamProjectId);
             return View(teamProjectMember);
         }
