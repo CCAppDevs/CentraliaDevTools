@@ -14,27 +14,34 @@ using CentraliaDevTools.Areas.Identity.Data;
 namespace CentraliaDevTools.Controllers
 {
     [Authorize]
-    public class TeamProjectsController : Controller
+    public class TicketsController : Controller
     {
         private readonly DevToolsContext _context;
         private readonly UserManager<DevToolsUser> _userManager;
 
-        public TeamProjectsController(DevToolsContext context, UserManager<DevToolsUser> usrMgr)
+        public TicketsController(DevToolsContext context, UserManager<DevToolsUser> userManager)
         {
             _context = context;
-            _userManager = usrMgr;
+            _userManager = userManager;
         }
 
-        // GET: TeamProjects
+        // GET: Tickets
+
+        // Revision ~ Sam Miller, Feb 20: Limit tickets shown to only those the current user is a member of
+
         public async Task<IActionResult> Index()
         {
+            // Get current user
             var user = await _userManager.GetUserAsync(User);
-            var devToolsContext = _context.TeamProjects.Include(t => t.Lead).Where(p => p.LeadId == user.Id);
-            return View(await devToolsContext.ToListAsync());
+
+            // Filter tickets to just those that the currently logged in user is a part of (in the TicketMembers list)
+            var filteredContext = _context.Ticket.Include(t => t.TicketMembers).Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id));
+
+            // Pass filtered data to the view
+            return View(await filteredContext.ToListAsync());
         }
 
-        
-        // GET: TeamProjects/Details/5
+        // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,44 +49,52 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
-            var teamProject = await _context.TeamProjects
-                .Include(t => t.Lead)
-                .FirstOrDefaultAsync(m => m.TeamProjectID == id);
-            if (teamProject == null)
+            var ticket = await _context.Ticket
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (ticket == null)
             {
                 return NotFound();
             }
 
-            return View(teamProject);
+            return View(ticket);
         }
 
-        // GET: TeamProjects/Create
-        public async Task<IActionResult> Create()
+        // GET: Tickets/Create
+        public IActionResult Create()
         {
-            var user = await _userManager.GetUserAsync(User);
-            ViewData["LeadId"] = user.Id;
             return View();
         }
 
-        // POST: TeamProjects/Create
+        // POST: Tickets/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TeamProjectID,Name,LeadId")] TeamProject teamProject)
+        public async Task<IActionResult> Create([Bind("TicketID,Name,Location,Description,CreatedOn")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(teamProject);
+                // Add ticket to database
+                _context.Add(ticket);
                 await _context.SaveChangesAsync();
+
+                // Add a new TicketMember entry with referencing appropriate ticket and member IDs
+                var user = await _userManager.GetUserAsync(User);
+                TicketMember tm = new TicketMember();
+
+                tm.TicketId = ticket.Id; // ID of new ticket
+                tm.MemberId = user.Id;   // ID of currently logged in user
+
+                // Add ticketmember to database
+                _context.Add(tm);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "UserName", teamProject.LeadId);
-            return View(teamProject);
+            return View(ticket);
         }
 
-        //[Authorize(Policy = "ProjectMembersOrAdmins")]
-        // GET: TeamProjects/Edit/5
+        // GET: Tickets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,24 +102,22 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
-            var teamProject = await _context.TeamProjects.FindAsync(id);
-            if (teamProject == null)
+            var ticket = await _context.Ticket.FindAsync(id);
+            if (ticket == null)
             {
                 return NotFound();
             }
-            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "UserName", teamProject.LeadId);
-            return View(teamProject);
+            return View(ticket);
         }
 
-        //[Authorize(Policy = "ProjectMembersOrAdmins")]
-        // POST: TeamProjects/Edit/5
+        // POST: Tickets/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TeamProjectID,Name,LeadId")] TeamProject teamProject)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn")] Ticket ticket)
         {
-            if (id != teamProject.TeamProjectID)
+            if (id != ticket.Id)
             {
                 return NotFound();
             }
@@ -113,12 +126,12 @@ namespace CentraliaDevTools.Controllers
             {
                 try
                 {
-                    _context.Update(teamProject);
+                    _context.Update(ticket);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TeamProjectExists(teamProject.TeamProjectID))
+                    if (!TicketExists(ticket.Id))
                     {
                         return NotFound();
                     }
@@ -129,12 +142,10 @@ namespace CentraliaDevTools.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LeadId"] = new SelectList(_context.Users, "Id", "UserName", teamProject.LeadId);
-            return View(teamProject);
+            return View(ticket);
         }
 
-        //[Authorize(Policy = "ProjectMembersOrAdmins")]
-        // GET: TeamProjects/Delete/5
+        // GET: Tickets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,32 +153,30 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
-            var teamProject = await _context.TeamProjects
-                .Include(t => t.Lead)
-                .FirstOrDefaultAsync(m => m.TeamProjectID == id);
-            if (teamProject == null)
+            var ticket = await _context.Ticket
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (ticket == null)
             {
                 return NotFound();
             }
 
-            return View(teamProject);
+            return View(ticket);
         }
 
-        //[Authorize(Policy = "ProjectMembersOrAdmins")]
-        // POST: TeamProjects/Delete/5
+        // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var teamProject = await _context.TeamProjects.FindAsync(id);
-            _context.TeamProjects.Remove(teamProject);
+            var ticket = await _context.Ticket.FindAsync(id);
+            _context.Ticket.Remove(ticket);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TeamProjectExists(int id)
+        private bool TicketExists(int id)
         {
-            return _context.TeamProjects.Any(e => e.TeamProjectID == id);
+            return _context.Ticket.Any(e => e.Id == id);
         }
     }
 }

@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using CentraliaDevTools.Areas.Identity.Data;
 using CentraliaDevTools.Infrastructure;
 using CentraliaDevTools.Models;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DevToolsContextConnection");
@@ -17,6 +18,22 @@ builder.Services.AddDefaultIdentity<DevToolsUser>(options => options.SignIn.Requ
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<DevToolsUser>, DevToolsPrincipalFactory>();
 builder.Services.AddScoped<ITicketService, TicketService>();
+
+// create the policy instance
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("ProjectMembersOrAdmins", policy =>
+//    {
+//        policy.AddRequirements(new ProjectMembershipAuthorizationRequirement
+//        {
+//            AllowAdmins = true,
+//            AllowMembers = true
+//        });
+//    });
+//});
+
+// inject the policy handler
+//builder.Services.AddTransient<IAuthorizationHandler, ProjectMembershipAuthorizationHandler>();
 
 
 // Add services to the container.
