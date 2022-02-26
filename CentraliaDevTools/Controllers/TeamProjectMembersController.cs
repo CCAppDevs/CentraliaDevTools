@@ -51,6 +51,8 @@ namespace CentraliaDevTools.Controllers
         {
             ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id");
             ViewData["TeamProjectId"] = new SelectList(_context.TeamProjects, "TeamProjectID", "TeamProjectID");
+            //here
+            ViewData["Name"] = new SelectList(_context.TeamProjects, "Name", "Name");
             return View();
         }
 
@@ -59,7 +61,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TeamProjectMemberID,TeamProjectId,MemberId")] TeamProjectMember teamProjectMember)
+        public async Task<IActionResult> Create([Bind("TeamProjectMemberID,TeamProjectId,MemberId,Member")] TeamProjectMember teamProjectMember)
         {
             if (ModelState.IsValid)
             {
@@ -86,8 +88,10 @@ namespace CentraliaDevTools.Controllers
             {
                 return NotFound();
             }
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Name", teamProjectMember.MemberId);
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id", teamProjectMember.MemberId);
             ViewData["TeamProjectId"] = new SelectList(_context.TeamProjects, "TeamProjectID", "TeamProjectID", teamProjectMember.TeamProjectId);
+            //here
+            ViewData["Name"] = new SelectList(_context.TeamProjects, "Name", "Name");
             return View(teamProjectMember);
         }
 
