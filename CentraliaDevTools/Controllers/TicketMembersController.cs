@@ -69,7 +69,7 @@ namespace CentraliaDevTools.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "UserName", ticketMember.MemberId);
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Name", ticketMember.MemberId);
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Id", ticketMember.TicketId);
             return View(ticketMember);
         }

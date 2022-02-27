@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.TicketStatusId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Location)
             </th>
             <th>
@@ -24,6 +27,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedOn)
             </th>
+
             <th></th>
         </tr>
     </thead>
@@ -32,6 +36,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketStatusId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Location)

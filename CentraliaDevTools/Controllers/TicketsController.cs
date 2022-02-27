@@ -37,6 +37,9 @@ namespace CentraliaDevTools.Controllers
             // Filter tickets to just those that the currently logged in user is a part of (in the TicketMembers list)
             var filteredContext = _context.Ticket.Include(t => t.TicketMembers).Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id));
 
+            // AP 2/27 Added Status to context   
+            //filteredContext.Include(ticket => ticket.TicketStatusId);
+
             // Pass filtered data to the view
             return View(await filteredContext.ToListAsync());
         }
@@ -82,8 +85,15 @@ namespace CentraliaDevTools.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 TicketMember tm = new TicketMember();
 
-                tm.TicketId = ticket.Id; // ID of new ticket
+            // AP
+            // int TicketStatusID = ticket.TicketStatusId;
+
+
+               tm.TicketId = ticket.Id; // ID of new ticket
                 tm.MemberId = user.Id;   // ID of currently logged in user
+            
+
+                
 
                 // Add ticketmember to database
                 _context.Add(tm);

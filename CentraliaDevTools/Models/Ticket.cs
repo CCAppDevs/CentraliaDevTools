@@ -9,9 +9,12 @@ namespace CentraliaDevTools.Models
         public string Location { get; set; }
         public string Description { get; set; }
         public List<TicketMember> TicketMembers { get; set; }
-        [DataType(DataType.Date)]
-        public DateTime CreatedOn { get; set; }
         
+      public int TicketStatusId { get; set; }
+      [DataType(DataType.Date)]
+        public DateTime CreatedOn { get; set; }
+        public DateTime DateLastClosed { get; set; }
+        public DateTime DateUpdated { get; set; }
 
     }
 }

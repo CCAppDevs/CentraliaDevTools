@@ -49,10 +49,10 @@ namespace CentraliaDevTools.Controllers
         // GET: TeamProjectMembers/Create
         public IActionResult Create()
         {
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Name");
             ViewData["TeamProjectId"] = new SelectList(_context.TeamProjects, "TeamProjectID", "TeamProjectID");
             //here
-            ViewData["Name"] = new SelectList(_context.TeamProjects, "Name", "Name");
+            //ViewData["Name"] = new SelectList(_context.TeamProjects, "Name", "Name");
             return View();
         }
 

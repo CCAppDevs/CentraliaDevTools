@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentraliaDevTools.Migrations
 {
     [DbContext(typeof(DevToolsContext))]
-    partial class DevToolsContextModelSnapshot : ModelSnapshot
+    [Migration("20220227212134_TicketSataus-class")]
+    partial class TicketSatausclass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,10 +159,12 @@ namespace CentraliaDevTools.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TicketStatusId")
+                    b.Property<int?>("StatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StatusId");
 
                     b.ToTable("Ticket");
                 });
@@ -186,6 +190,22 @@ namespace CentraliaDevTools.Migrations
                     b.HasIndex("TicketId");
 
                     b.ToTable("TicketMembers");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.TicketStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TicketStatus");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -349,6 +369,15 @@ namespace CentraliaDevTools.Migrations
                     b.Navigation("Member");
 
                     b.Navigation("TeamProject");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.Ticket", b =>
+                {
+                    b.HasOne("CentraliaDevTools.Models.TicketStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId");
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("CentraliaDevTools.Models.TicketMember", b =>
