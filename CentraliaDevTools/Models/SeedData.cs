@@ -1,4 +1,5 @@
 ﻿using CentraliaDevTools.Areas.Identity.Data;
+using CentraliaDevTools.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace CentraliaDevTools.Models
@@ -9,6 +10,7 @@ namespace CentraliaDevTools.Models
         {
             UserManager<DevToolsUser> userManager = serviceProvider.GetRequiredService<UserManager<DevToolsUser>>();
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            DevToolsContext context = serviceProvider.GetRequiredService<DevToolsContext>();
 
             string username = "admin@site.com";
             string email = "admin@site.com";
@@ -34,6 +36,44 @@ namespace CentraliaDevTools.Models
                 {
                     await userManager.AddToRoleAsync(user, role);
                 }
+
+                List<Ticket> tickets = new List<Ticket>
+                {
+                    new Ticket {
+                        CreatedOn = DateTime.UtcNow,
+                        Name = "Test Ticket",
+                        TicketStatusId = 0,
+                        Description = "test",
+                        Location = "here"
+                    },
+                    new Ticket {
+                        CreatedOn = DateTime.UtcNow,
+                        Name = "Test Ticket again",
+                        TicketStatusId = 0,
+                        Description = "test",
+                        Location = "here"
+                    }
+                };
+
+                context.Ticket.AddRange(tickets);
+                await context.SaveChangesAsync(); // creates the ids
+
+                List<TicketMember> ticketMembers = new List<TicketMember>
+                {
+                    new TicketMember
+                    {
+                        Ticket = tickets[0],
+                        Member = context.Users.Where(u => u.UserName == username).FirstOrDefault()
+                    },
+                    new TicketMember
+                    {
+                        Ticket = tickets[1],
+                        Member = context.Users.Where(u => u.UserName == username).FirstOrDefault()
+                    }
+                };
+
+                context.TicketMembers.AddRange(ticketMembers);
+                await context.SaveChangesAsync();
             }
         }
     }
