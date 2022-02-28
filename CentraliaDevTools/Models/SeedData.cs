@@ -42,14 +42,14 @@ namespace CentraliaDevTools.Models
                     new Ticket {
                         CreatedOn = DateTime.UtcNow,
                         Name = "Test Ticket",
-                        TicketStatusId = 0,
+                        //Status = TicketStatus.get()
                         Description = "test",
                         Location = "here"
                     },
                     new Ticket {
                         CreatedOn = DateTime.UtcNow,
                         Name = "Test Ticket again",
-                        TicketStatusId = 0,
+                        //Status = TicketStatus,
                         Description = "test",
                         Location = "here"
                     }
