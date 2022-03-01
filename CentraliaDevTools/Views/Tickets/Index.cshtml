@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TicketStatusId)
+                @Html.DisplayNameFor(model => model.TicketStatus.Status)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Location)
@@ -41,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TicketStatusId)
+                @Html.DisplayFor(modelItem => item.TicketStatus.Status)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Location)

@@ -37,12 +37,28 @@ namespace CentraliaDevTools.Models
                     await userManager.AddToRoleAsync(user, role);
                 }
 
+                List<TicketStatus> statuses = new List<TicketStatus>
+                {
+                    new TicketStatus {
+                        Status = "Open",
+                        Priority = 1
+                    },
+                    new TicketStatus {
+                        Status = "Closed",
+                        Priority = 1
+                    }
+                };
+
+                context.TicketStatus.AddRange(statuses);
+                await context.SaveChangesAsync();
+
                 List<Ticket> tickets = new List<Ticket>
                 {
                     new Ticket {
                         CreatedOn = DateTime.UtcNow,
                         Name = "Test Ticket",
                         TicketStatusId = 0,
+                        TicketStatus = statuses[0],
                         Description = "test",
                         Location = "here"
                     },
@@ -50,6 +66,7 @@ namespace CentraliaDevTools.Models
                         CreatedOn = DateTime.UtcNow,
                         Name = "Test Ticket again",
                         TicketStatusId = 0,
+                        TicketStatus = statuses[0],
                         Description = "test",
                         Location = "here"
                     }
