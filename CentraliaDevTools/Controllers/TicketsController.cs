@@ -65,6 +65,7 @@ namespace CentraliaDevTools.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
+            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatus, "TicketStatusID", "Status");
             return View();
         }
 
@@ -73,7 +74,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketID,Name,Location,Description,CreatedOn,DateLastClosed,DateUpdated")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("TicketID,Name,Location,Description,CreatedOn,DateLastClosed,DateUpdated,TicketStatusId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -101,6 +102,7 @@ namespace CentraliaDevTools.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatus, "TicketStatusID", "Status", ticket.TicketStatusId);
             return View(ticket);
         }
 

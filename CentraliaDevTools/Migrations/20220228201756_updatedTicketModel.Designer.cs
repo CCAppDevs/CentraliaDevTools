@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentraliaDevTools.Migrations
 {
     [DbContext(typeof(DevToolsContext))]
-    partial class DevToolsContextModelSnapshot : ModelSnapshot
+    [Migration("20220228201756_updatedTicketModel")]
+    partial class updatedTicketModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,6 +163,8 @@ namespace CentraliaDevTools.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TicketStatusId");
 
                     b.ToTable("Ticket");
                 });
@@ -370,6 +374,17 @@ namespace CentraliaDevTools.Migrations
                     b.Navigation("TeamProject");
                 });
 
+            modelBuilder.Entity("CentraliaDevTools.Models.Ticket", b =>
+                {
+                    b.HasOne("CentraliaDevTools.Models.TicketStatus", "Status")
+                        .WithMany("tickets")
+                        .HasForeignKey("TicketStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Status");
+                });
+
             modelBuilder.Entity("CentraliaDevTools.Models.TicketMember", b =>
                 {
                     b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Member")
@@ -455,6 +470,11 @@ namespace CentraliaDevTools.Migrations
             modelBuilder.Entity("CentraliaDevTools.Models.Ticket", b =>
                 {
                     b.Navigation("TicketMembers");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.TicketStatus", b =>
+                {
+                    b.Navigation("tickets");
                 });
 #pragma warning restore 612, 618
         }
