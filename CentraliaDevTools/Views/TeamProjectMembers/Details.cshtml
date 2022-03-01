@@ -14,13 +14,13 @@
             @Html.DisplayNameFor(model => model.TeamProject)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TeamProject.TeamProjectID)
+            @Html.DisplayFor(model => model.TeamProject.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Member)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TeamProject.Name)
+            @Html.DisplayFor(model => model.TeamProject.Lead.UserName)
         </dd>
     </dl>
 </div>
