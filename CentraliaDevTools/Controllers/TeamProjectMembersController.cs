@@ -49,10 +49,8 @@ namespace CentraliaDevTools.Controllers
         // GET: TeamProjectMembers/Create
         public IActionResult Create()
         {
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["TeamProjectId"] = new SelectList(_context.TeamProjects, "TeamProjectID", "TeamProjectID");
-            //here
-            ViewData["Name"] = new SelectList(_context.TeamProjects, "Name", "Name");
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "UserName");
+            ViewData["TeamProjectId"] = new SelectList(_context.TeamProjects, "TeamProjectID", "Name");
             return View();
         }
 
@@ -88,10 +86,8 @@ namespace CentraliaDevTools.Controllers
             {
                 return NotFound();
             }
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Id", teamProjectMember.MemberId);
-            ViewData["TeamProjectId"] = new SelectList(_context.TeamProjects, "TeamProjectID", "TeamProjectID", teamProjectMember.TeamProjectId);
-            //here
-            ViewData["Name"] = new SelectList(_context.TeamProjects, "Name", "Name");
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "UserName", teamProjectMember.MemberId);
+            ViewData["TeamProjectId"] = new SelectList(_context.TeamProjects, "TeamProjectID", "Name", teamProjectMember.TeamProjectId);
             return View(teamProjectMember);
         }
 

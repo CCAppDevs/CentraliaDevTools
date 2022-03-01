@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentraliaDevTools.Migrations
 {
     [DbContext(typeof(DevToolsContext))]
-    partial class DevToolsContextModelSnapshot : ModelSnapshot
+    [Migration("20220227212134_TicketSataus-class")]
+    partial class TicketSatausclass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,16 +141,13 @@ namespace CentraliaDevTools.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AssignUser")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateLastClosed")
+                    b.Property<DateTime>("DateLastClosed")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateUpdated")
+                    b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -160,12 +159,12 @@ namespace CentraliaDevTools.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StatusTicketStatusId")
+                    b.Property<int?>("StatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TicketStatusId");
+                    b.HasIndex("StatusId");
 
                     b.ToTable("Ticket");
                 });
@@ -195,19 +194,16 @@ namespace CentraliaDevTools.Migrations
 
             modelBuilder.Entity("CentraliaDevTools.Models.TicketStatus", b =>
                 {
-                    b.Property<int>("TicketStatusId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketStatusId"), 1L, 1);
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TicketStatusId");
+                    b.HasKey("Id");
 
                     b.ToTable("TicketStatus");
                 });
@@ -377,13 +373,11 @@ namespace CentraliaDevTools.Migrations
 
             modelBuilder.Entity("CentraliaDevTools.Models.Ticket", b =>
                 {
-                    b.HasOne("CentraliaDevTools.Models.TicketStatus", "TicketStatus")
+                    b.HasOne("CentraliaDevTools.Models.TicketStatus", "Status")
                         .WithMany()
-                        .HasForeignKey("TicketStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StatusId");
 
-                    b.Navigation("TicketStatus");
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("CentraliaDevTools.Models.TicketMember", b =>

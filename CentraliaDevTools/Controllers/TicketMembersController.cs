@@ -27,6 +27,16 @@ namespace CentraliaDevTools.Controllers
             var devToolsContext = _context.TicketMembers.Include(t => t.Member).Include(t => t.Ticket);
             return View(await devToolsContext.ToListAsync());
         }
+        // GET: TicketMembers/Members/<TicketId>
+        public async Task<IActionResult> Members(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var devToolsContext = _context.TicketMembers.Include(t => t.Member).Include(t => t.Ticket).Where(t => t.TicketId == id);
+            return View(await devToolsContext.ToListAsync());
+        }
 
         // GET: TicketMembers/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -69,7 +79,7 @@ namespace CentraliaDevTools.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "UserName", ticketMember.MemberId);
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Name", ticketMember.MemberId);
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Id", ticketMember.TicketId);
             return View(ticketMember);
         }
