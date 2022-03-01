@@ -30,7 +30,14 @@ namespace CentraliaDevTools.Infrastructure
             StringComparison compare = StringComparison.OrdinalIgnoreCase;
 
             bool isLead = project.LeadId.Equals(user, compare);
-            bool isMember = project.Memberships.Exists(m => m.MemberId.Equals(user, compare));
+
+            bool isMember = false;
+            
+            if (project.Memberships != null)
+            {
+                isMember = project.Memberships.Exists(m => m.MemberId.Equals(user, compare));
+            }
+            
 
             if (project != null &&
                 user != null &&

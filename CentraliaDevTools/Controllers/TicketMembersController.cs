@@ -27,6 +27,16 @@ namespace CentraliaDevTools.Controllers
             var devToolsContext = _context.TicketMembers.Include(t => t.Member).Include(t => t.Ticket);
             return View(await devToolsContext.ToListAsync());
         }
+        // GET: TicketMembers/Members/<TicketId>
+        public async Task<IActionResult> Members(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var devToolsContext = _context.TicketMembers.Include(t => t.Member).Include(t => t.Ticket).Where(t => t.TicketId == id);
+            return View(await devToolsContext.ToListAsync());
+        }
 
         // GET: TicketMembers/Details/5
         public async Task<IActionResult> Details(int? id)
