@@ -17,11 +17,13 @@ namespace CentraliaDevTools.Controllers
     public class TicketsController : Controller
     {
         private readonly DevToolsContext _context;
+        private readonly DevToolsContext _statusContext;
         private readonly UserManager<DevToolsUser> _userManager;
 
         public TicketsController(DevToolsContext context, UserManager<DevToolsUser> userManager)
         {
             _context = context;
+            _statusContext = context;
             _userManager = userManager;
         }
 
@@ -40,8 +42,21 @@ namespace CentraliaDevTools.Controllers
             // AP 2/27 Added Status to context   
             //filteredContext.Include(ticket => ticket.TicketStatusId);
 
-            // Pass filtered data to the view
-            return View(await filteredContext.ToListAsync());
+            var newviewModel = new TicketIndexViewModel
+            {
+                    ClosedTickets = _context.Ticket
+                    .Include(t => t.TicketMembers)
+                    .Include(t => t.TicketStatus)
+                    .Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id) && ticket.TicketStatusId == 2).ToList(),
+
+                    OpenTickets = _context.Ticket
+                    .Include(t => t.TicketMembers)
+                    .Include(t => t.TicketStatus)
+                    .Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id) && ticket.TicketStatusId == 1).ToList(),
+            };
+
+
+            return View(newviewModel);
         }
 
         // GET: Tickets/Details/5
@@ -52,7 +67,7 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket
+            var ticket = await _context.Ticket.Include(t => t.TicketStatus)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -65,6 +80,7 @@ namespace CentraliaDevTools.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
+            ViewData["TicketStatusId"] = new SelectList(_statusContext.TicketStatus, "TicketStatusId", "Status");
             return View();
         }
 
@@ -73,7 +89,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketID,Name,Location,Description,CreatedOn,DateLastClosed,DateUpdated")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("TicketID,Name,Location,Description,CreatedOn,DateLastClosed,DateUpdated,TicketStatusId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -101,6 +117,7 @@ namespace CentraliaDevTools.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatus, "TicketStatusId", "Status", ticket.TicketStatusId);
             return View(ticket);
         }
 
@@ -117,6 +134,7 @@ namespace CentraliaDevTools.Controllers
             {
                 return NotFound();
             }
+            ViewData["TicketStatusId"] = new SelectList(_statusContext.TicketStatus, "TicketStatusId", "Status");
             return View(ticket);
         }
 
@@ -125,7 +143,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn,DateLastClosed,DateUpdated")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn,DateLastClosed,DateUpdated,TicketStatusId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
@@ -152,6 +170,7 @@ namespace CentraliaDevTools.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatus, "TicketStatusId", "Status", ticket.TicketStatusId);
             return View(ticket);
         }
 
@@ -163,7 +182,7 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket
+            var ticket = await _context.Ticket.Include(t => t.TicketStatus)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {

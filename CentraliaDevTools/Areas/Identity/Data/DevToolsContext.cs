@@ -16,6 +16,9 @@ public class DevToolsContext : IdentityDbContext<DevToolsUser>
     public DbSet<TeamProject> TeamProjects { get; set; }
     public DbSet<TeamProjectMember> Memberships { get; set; }
     public DbSet<TicketMember> TicketMembers { get; set; }
+    public DbSet<Ticket> Ticket { get; set; }
+    public DbSet<TicketStatus> TicketStatus { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -25,5 +28,5 @@ public class DevToolsContext : IdentityDbContext<DevToolsUser>
         // Add your customizations after calling base.OnModelCreating(builder);
     }
 
-    public DbSet<CentraliaDevTools.Models.Ticket> Ticket { get; set; }
+
 }

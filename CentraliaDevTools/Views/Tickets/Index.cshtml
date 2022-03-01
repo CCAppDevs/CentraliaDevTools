@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CentraliaDevTools.Models.Ticket>
+﻿@model TicketIndexViewModel
 
 @{
     ViewData["Title"] = "Tickets";
@@ -9,39 +9,40 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<h1>Open Tickets</h1>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                Status
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                Location
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
+                CreatedOn
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateUpdated)
+                DateUpdated
             </th>
 
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.OpenTickets) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @Html.DisplayFor(modelItem => item.TicketStatus.Status)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Location)
@@ -64,4 +65,60 @@
         </tr>
 }
     </tbody>
+</table>
+    <h1>Closed Tickets</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                CreatedOn
+            </th>
+            <th>
+                DateUpdated
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ClosedTickets) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketStatus.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateUpdated)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="TicketMembers" asp-action="Edit" asp-route-id="@item.Id">Edit Members</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
 </table>
