@@ -24,6 +24,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedOn)
             </th>
+             <th>
+                @Html.DisplayNameFor(model => model.AssignUser)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,6 +45,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
+             <th>
+                @Html.DisplayFor(modelItem => item.AssignUser)
+            </th>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-controller="TicketMembers" asp-action="Edit" asp-route-id="@item.Id">Edit Members</a> |

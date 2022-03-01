@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CentraliaDevTools.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 namespace CentraliaDevTools.Models
 {
     public class Ticket
@@ -11,7 +12,7 @@ namespace CentraliaDevTools.Models
         public List<TicketMember> TicketMembers { get; set; }
         [DataType(DataType.Date)]
         public DateTime CreatedOn { get; set; }
-        
+        public string AssignUser { get; set; }
 
     }
 }
