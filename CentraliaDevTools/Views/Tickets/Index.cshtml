@@ -31,7 +31,9 @@
             <th>
                 DateUpdated
             </th>
-
+            <th>
+                TicketMembers
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -55,6 +57,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateUpdated)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.TicketMembers)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -89,7 +94,7 @@
                 DateUpdated
             </th>
              <th>
-                @Html.DisplayNameFor(model => model.AssignUser)
+                TicketMembers
             </th>
             <th></th>
         </tr>
@@ -112,9 +117,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
-             <th>
-                @Html.DisplayFor(modelItem => item.AssignUser)
-            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.DateUpdated)
             </td>

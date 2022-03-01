@@ -143,7 +143,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn, AssignUser")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn, TicketMembers")] Ticket ticket, TicketMember ticketMember)
         {
             if (id != ticket.Id)
             {
@@ -171,7 +171,9 @@ namespace CentraliaDevTools.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TicketStatusId"] = new SelectList(_context.TicketStatus, "TicketStatusId", "Status", ticket.TicketStatusId);
+            ViewData["TicketMembersId"] = new SelectList(_context.TicketMembers, "TicketMemberID", "MemberId", ticketMember.MemberId);
             return View(ticket);
+            
         }
 
         // GET: Tickets/Delete/5

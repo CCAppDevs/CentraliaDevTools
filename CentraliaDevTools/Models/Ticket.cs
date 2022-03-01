@@ -20,7 +20,7 @@ namespace CentraliaDevTools.Models
         //Made this a nullable field that way we only import a date once edited. - Jordan M
         [DataType(DataType.DateTime)]
         public DateTime? DateUpdated { get; set; }
-        public string AssignUser { get; set; }
+        
 
     }
 }
