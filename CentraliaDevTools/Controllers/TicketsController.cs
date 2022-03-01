@@ -17,11 +17,13 @@ namespace CentraliaDevTools.Controllers
     public class TicketsController : Controller
     {
         private readonly DevToolsContext _context;
+        private readonly DevToolsContext _statusContext;
         private readonly UserManager<DevToolsUser> _userManager;
 
         public TicketsController(DevToolsContext context, UserManager<DevToolsUser> userManager)
         {
             _context = context;
+            _statusContext = context;
             _userManager = userManager;
         }
 
@@ -65,7 +67,7 @@ namespace CentraliaDevTools.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatus, "TicketStatusID", "Status");
+            ViewData["TicketStatusId"] = new SelectList(_statusContext.TicketStatus, "TicketStatusId", "Status");
             return View();
         }
 
@@ -102,7 +104,7 @@ namespace CentraliaDevTools.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatus, "TicketStatusID", "Status", ticket.TicketStatusId);
+            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatus, "TicketStatusId", "Status", ticket.TicketStatusId);
             return View(ticket);
         }
 
