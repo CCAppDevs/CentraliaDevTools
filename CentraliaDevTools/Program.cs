@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using CentraliaDevTools.Areas.Identity.Data;
 using CentraliaDevTools.Infrastructure;
 using CentraliaDevTools.Models;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DevToolsContextConnection");
@@ -15,7 +16,23 @@ builder.Services.AddDefaultIdentity<DevToolsUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DevToolsContext>();
 
+
+builder.Services.AddAuthorization(opts =>
+{
+    opts.AddPolicy("MembersAndAdmins", policy =>
+    {
+        policy.AddRequirements(new ProjectMembershipAuthorizationRequirement
+        {
+            AllowAdmins = true,
+            AllowMembers = true
+        });
+    });
+});
+
+
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<DevToolsUser>, DevToolsPrincipalFactory>();
+builder.Services.AddTransient<IAuthorizationHandler, ProjectMembershipAuthorizationHandler>();
+
 builder.Services.AddScoped<ITicketService, TicketService>();
 
 
