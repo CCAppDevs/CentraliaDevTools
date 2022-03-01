@@ -46,10 +46,12 @@ namespace CentraliaDevTools.Controllers
             {
                     ClosedTickets = _context.Ticket
                     .Include(t => t.TicketMembers)
+                    .Include(t => t.TicketStatus)
                     .Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id) && ticket.TicketStatusId == 2).ToList(),
 
                     OpenTickets = _context.Ticket
                     .Include(t => t.TicketMembers)
+                    .Include(t => t.TicketStatus)
                     .Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id) && ticket.TicketStatusId == 1).ToList(),
             };
 
