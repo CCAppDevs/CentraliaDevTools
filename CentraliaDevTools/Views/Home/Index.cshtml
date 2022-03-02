@@ -1,4 +1,5 @@
-﻿@{
+﻿@model TicketIndexViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -20,3 +21,62 @@
         }
     </ul>
 </environment>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                CreatedOn
+            </th>
+            <th>
+                DateUpdated
+            </th>
+            <th>
+                TicketMembers
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OpenTickets) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketStatus.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateUpdated)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.TicketMembers)
+            </td>
+            <td>
+                <a asp-controller="TicketMembers" asp-action="Members" asp-route-id="@item.Id">Enroll</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
