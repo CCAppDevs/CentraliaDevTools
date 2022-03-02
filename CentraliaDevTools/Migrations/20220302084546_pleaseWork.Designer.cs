@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentraliaDevTools.Migrations
 {
     [DbContext(typeof(DevToolsContext))]
-    [Migration("20220210183657_adding-models")]
-    partial class addingmodels
+    [Migration("20220302084546_pleaseWork")]
+    partial class pleaseWork
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -69,9 +69,6 @@ namespace CentraliaDevTools.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TeamProjectID")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -88,8 +85,6 @@ namespace CentraliaDevTools.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("TeamProjectID");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -113,6 +108,107 @@ namespace CentraliaDevTools.Migrations
                     b.HasIndex("LeadId");
 
                     b.ToTable("TeamProjects");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.TeamProjectMember", b =>
+                {
+                    b.Property<int>("TeamProjectMemberID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeamProjectMemberID"), 1L, 1);
+
+                    b.Property<string>("MemberId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TeamProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeamProjectMemberID");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("TeamProjectId");
+
+                    b.ToTable("Memberships");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateLastClosed")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TicketStatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketStatusId");
+
+                    b.ToTable("Ticket");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.TicketMember", b =>
+                {
+                    b.Property<int>("TicketMemberID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketMemberID"), 1L, 1);
+
+                    b.Property<string>("MemberId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TicketMemberID");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("TicketMembers");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.TicketStatus", b =>
+                {
+                    b.Property<int>("TicketStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketStatusId"), 1L, 1);
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TicketStatusId");
+
+                    b.ToTable("TicketStatus");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -252,20 +348,58 @@ namespace CentraliaDevTools.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", b =>
-                {
-                    b.HasOne("CentraliaDevTools.Models.TeamProject", null)
-                        .WithMany("Members")
-                        .HasForeignKey("TeamProjectID");
-                });
-
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>
                 {
                     b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Lead")
-                        .WithMany()
+                        .WithMany("OwnedProjects")
                         .HasForeignKey("LeadId");
 
                     b.Navigation("Lead");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.TeamProjectMember", b =>
+                {
+                    b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Member")
+                        .WithMany("Memberships")
+                        .HasForeignKey("MemberId");
+
+                    b.HasOne("CentraliaDevTools.Models.TeamProject", "TeamProject")
+                        .WithMany("Memberships")
+                        .HasForeignKey("TeamProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("TeamProject");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.Ticket", b =>
+                {
+                    b.HasOne("CentraliaDevTools.Models.TicketStatus", "TicketStatus")
+                        .WithMany()
+                        .HasForeignKey("TicketStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TicketStatus");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.TicketMember", b =>
+                {
+                    b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Member")
+                        .WithMany("TicketMembers")
+                        .HasForeignKey("MemberId");
+
+                    b.HasOne("CentraliaDevTools.Models.Ticket", "Ticket")
+                        .WithMany("TicketMembers")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -319,9 +453,23 @@ namespace CentraliaDevTools.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", b =>
+                {
+                    b.Navigation("Memberships");
+
+                    b.Navigation("OwnedProjects");
+
+                    b.Navigation("TicketMembers");
+                });
+
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>
                 {
-                    b.Navigation("Members");
+                    b.Navigation("Memberships");
+                });
+
+            modelBuilder.Entity("CentraliaDevTools.Models.Ticket", b =>
+                {
+                    b.Navigation("TicketMembers");
                 });
 #pragma warning restore 612, 618
         }

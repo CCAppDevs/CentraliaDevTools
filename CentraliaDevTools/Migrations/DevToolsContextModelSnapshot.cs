@@ -139,9 +139,6 @@ namespace CentraliaDevTools.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AssignUser")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -160,7 +157,7 @@ namespace CentraliaDevTools.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StatusTicketStatusId")
+                    b.Property<int>("TicketStatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

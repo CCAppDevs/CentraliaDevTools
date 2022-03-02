@@ -143,7 +143,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn, TicketMembers")] Ticket ticket, TicketMember ticketMember)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn, TicketMembers, TicketStatusId")] Ticket ticket, TicketMember ticketMember)
         {
             if (id != ticket.Id)
             {
