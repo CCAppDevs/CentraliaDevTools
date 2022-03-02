@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CentraliaDevTools.Data;
 using CentraliaDevTools.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CentraliaDevTools.Controllers
 {
+    [Authorize(Roles = "Admins")]
     public class TicketStatusController : Controller
     {
         private readonly DevToolsContext _context;

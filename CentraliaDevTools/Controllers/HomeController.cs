@@ -10,7 +10,6 @@ using System.Diagnostics;
 
 namespace CentraliaDevTools.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -28,26 +27,20 @@ namespace CentraliaDevTools.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewData["RandomID"] = _ticketService.GetRandomUserID();
-            ViewData["JesseID"] = _ticketService.GetUserIDByName("jesse@jesse.com");
-
-            // Get current user
-            var user = await _userManager.GetUserAsync(User);
-
             // Filter tickets to just those that the currently logged in user is not a part of (in the TicketMembers list)
-            var filteredContext = _context.Ticket.Include(t => t.TicketMembers).Where(ticket => ticket.TicketMembers.Any(m => m.MemberId != user.Id));
+            var filteredContext = _context.Ticket.Include(t => t.TicketMembers);
 
             var newviewModel = new TicketIndexViewModel
             {
                 ClosedTickets = _context.Ticket
                    .Include(t => t.TicketMembers)
                    .Include(t => t.TicketStatus)
-                   .Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id) && ticket.TicketStatusId == 2).ToList(),
+                   .Where(ticket => ticket.TicketStatusId == 2).ToList(),
 
                 OpenTickets = _context.Ticket
                    .Include(t => t.TicketMembers)
                    .Include(t => t.TicketStatus)
-                   .Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id) && ticket.TicketStatusId == 1).ToList(),
+                   .Where(ticket => ticket.TicketStatusId == 1).ToList(),
             };
 
 

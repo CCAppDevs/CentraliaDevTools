@@ -5,22 +5,7 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <environment include="Development,Staging">
-        <p>random user = @ViewData["RandomID"]</p>
-        <p>jesse@jesse.com id = @ViewData["JesseID"]</p>
-    </environment>
 </div>
-
-<environment exclude="Production">
-    <h3>Current Claims</h3>
-    <ul>
-        @foreach (var claim in User.Claims)
-        {
-            <li>@claim.Type - @claim.Value</li>
-        }
-    </ul>
-</environment>
 
 <table class="table">
     <thead>
@@ -46,7 +31,12 @@
             <th>
                 TicketMembers
             </th>
-            <th></th>
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <th>
+                    Controls
+                </th>    
+            }
         </tr>
     </thead>
     <tbody>
@@ -73,9 +63,12 @@
              <td>
                 @Html.DisplayFor(modelItem => item.TicketMembers)
             </td>
-            <td>
-                <a asp-controller="TicketMembers" asp-action="Members" asp-route-id="@item.Id">Enroll</a> |
-            </td>
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <td>
+                    <a asp-controller="TicketMembers" asp-action="Members" asp-route-id="@item.Id">Enroll</a> |
+                </td>    
+            }
         </tr>
 }
     </tbody>
