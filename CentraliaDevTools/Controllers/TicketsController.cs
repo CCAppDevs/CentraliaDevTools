@@ -27,6 +27,36 @@ namespace CentraliaDevTools.Controllers
             _userManager = userManager;
         }
 
+        // GET: Tickets/Toggle/5
+
+        public async Task<IActionResult> Toggle(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var ticket = await _context.Ticket.Include(t => t.TicketStatus)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            if (ticket.TicketStatusId == 1)
+            {
+                ticket.TicketStatusId = 2;
+            } else
+            {
+                ticket.TicketStatusId = 1;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Tickets
 
         // Revision ~ Sam Miller, Feb 20: Limit tickets shown to only those the current user is a member of
