@@ -1,6 +1,9 @@
 ﻿@model TicketIndexViewModel
 @{
     ViewData["Title"] = "Home Page";
+
+    // Get current user
+    var user = await userManager.GetUserAsync(User);
 }
 
 <div class="text-center">
@@ -31,7 +34,7 @@
             <th>
                 TicketMembers
             </th>
-            @if (User?.Identity?.IsAuthenticated ?? false)
+            @if ((User?.Identity?.IsAuthenticated ?? false))
             {
                 <th>
                     Controls
@@ -63,10 +66,11 @@
              <td>
                 @Html.DisplayFor(modelItem => item.TicketMembers)
             </td>
-            @if (User?.Identity?.IsAuthenticated ?? false)
+            @if ((User?.Identity?.IsAuthenticated ?? false) &&
+                !(item.TicketMembers.Any(tm => tm.MemberId == user.Id)))
             {
                 <td>
-                    <a asp-controller="TicketMembers" asp-action="Members" asp-route-id="@item.Id">Enroll</a> |
+                    <a asp-controller="Tickets" asp-action="Enroll" asp-route-id="@item.Id">Enroll</a>
                 </td>    
             }
         </tr>

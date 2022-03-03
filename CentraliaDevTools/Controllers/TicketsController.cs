@@ -29,6 +29,10 @@ namespace CentraliaDevTools.Controllers
 
         // GET: Tickets/Toggle/5
 
+        // Sam Miller
+
+        // Toggles the target ticket's status
+
         public async Task<IActionResult> Toggle(int? id)
         {
             if (id == null)
@@ -36,6 +40,7 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
+            // Get the ticket
             var ticket = await _context.Ticket.Include(t => t.TicketStatus)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -44,6 +49,7 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
+            // Change the ticket's status to the opposite value
             if (ticket.TicketStatusId == 1)
             {
                 ticket.TicketStatusId = 2;
@@ -52,6 +58,47 @@ namespace CentraliaDevTools.Controllers
                 ticket.TicketStatusId = 1;
             }
 
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Tickets/Enroll/5
+
+        // Sam Miller
+
+        // Adds the currently logged in user to the target ticket's members list
+
+        public async Task<IActionResult> Enroll(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            // Get current user
+            var user = await _userManager.GetUserAsync(User);
+
+            // Get the ticket
+            var ticket = await _context.Ticket.Include(t => t.TicketMembers)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            // Create new TicketMember with user and ticket info
+            TicketMember tm = new TicketMember
+            {
+                Ticket = ticket,
+                TicketId = ticket.Id,
+                Member = user,
+                MemberId = user.Id
+            };
+
+            // Add the TicketMember to the target ticket
+            ticket.TicketMembers.Add(tm);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
