@@ -101,7 +101,7 @@ namespace CentraliaDevTools.Controllers
             ticket.TicketMembers.Add(tm);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Tickets
