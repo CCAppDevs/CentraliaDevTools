@@ -10,7 +10,8 @@ namespace CentraliaDevTools.Models
         public string Location { get; set; }
         public string Description { get; set; }
         public List<TicketMember> TicketMembers { get; set; }
-        
+        public string AssignedUserId { get; set; }
+        public DevToolsUser AssignedUser { get; set; }
         public int TicketStatusId { get; set; }
         public TicketStatus TicketStatus { get; set; }
         [DataType(DataType.Date)]

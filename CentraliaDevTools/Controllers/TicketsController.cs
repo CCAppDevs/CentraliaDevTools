@@ -166,7 +166,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketID,Name,Location,Description,CreatedOn,DateLastClosed,DateUpdated,TicketStatusId")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("TicketID,Name,Location,Description,CreatedOn,DateLastClosed,DateUpdated,TicketStatusId,")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
