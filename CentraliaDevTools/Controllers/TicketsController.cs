@@ -50,13 +50,16 @@ namespace CentraliaDevTools.Controllers
             }
 
             // Change the ticket's status to the opposite value
-            if (ticket.TicketStatusId == 1)
+            if (ticket.TicketStatusId == 1)  // Ticket is Open, close it
             {
                 ticket.TicketStatusId = 2;
-            } else
+                ticket.DateLastClosed = DateTime.Today;
+            } else    // Ticket is Closed, open it
             {
                 ticket.TicketStatusId = 1;
             }
+            // AP - updated Dates updated & closed on toggle
+            ticket.DateUpdated = DateTime.Today;
 
             await _context.SaveChangesAsync();
 
@@ -115,9 +118,6 @@ namespace CentraliaDevTools.Controllers
 
             // Filter tickets to just those that the currently logged in user is a part of (in the TicketMembers list)
             var filteredContext = _context.Ticket.Include(t => t.TicketMembers).Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id));
-
-            // AP 2/27 Added Status to context   
-            //filteredContext.Include(ticket => ticket.TicketStatusId);
 
             var newviewModel = new TicketIndexViewModel
             {
@@ -178,11 +178,8 @@ namespace CentraliaDevTools.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 TicketMember tm = new TicketMember();
 
-            // AP
-            // int TicketStatusID = ticket.TicketStatusId;
 
-
-               tm.TicketId = ticket.Id; // ID of new ticket
+                tm.TicketId = ticket.Id; // ID of new ticket
                 tm.MemberId = user.Id;   // ID of currently logged in user
             
 
@@ -220,7 +217,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn, TicketMembers, TicketStatusId")] Ticket ticket, TicketMember ticketMember)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn, DateLastClosed, DateUpdated, TicketMembers, TicketStatusId")] Ticket ticket, TicketMember ticketMember)
         {
             if (id != ticket.Id)
             {

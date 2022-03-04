@@ -98,7 +98,7 @@
                 CreatedOn
             </th>
             <th>
-                DateUpdated
+                Date Last Closed
             </th>
              <th>
                 TicketMembers
@@ -125,7 +125,7 @@
                 @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateUpdated)
+                @Html.DisplayFor(modelItem => item.DateLastClosed)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TicketMembers)
@@ -146,7 +146,7 @@
 
 
 
-<h1>Time Used</h1>
+<h1>Resolution Time</h1>
 <table class="table">
     <thead>
         <tr>
@@ -163,7 +163,7 @@
                 Date Last Closed
             </th>
             <th>Assigned User</th>
-            <th>Time Used</th>
+            <th>Resolution Time</th>
             <th></th>
         </tr>
     </thead>
