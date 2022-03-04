@@ -143,3 +143,48 @@
         </tr>
 }
 </table>
+
+
+
+<h1>Time Used</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Date Opened
+            </th>
+            <th>
+                Date Last Closed
+            </th>
+            <th>Assigned User</th>
+            <th>Time Used</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ClosedTickets) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateLastClosed)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.AssignedUser)
+            </td>
+        </tr>
+}
+</table>
