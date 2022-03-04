@@ -16,11 +16,11 @@ namespace CentraliaDevTools.Models
         public TicketStatus TicketStatus { get; set; }
         [DataType(DataType.Date)]
         public DateTime CreatedOn { get; set; }
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime? DateLastClosed { get; set; }
-        //Made this a nullable field that way we only import a date once edited. - Jordan M
-        [DataType(DataType.DateTime)]
-        public DateTime? DateUpdated { get; set; }
+      //Made this a nullable field that way we only import a date once edited. - Jordan M
+      [DataType(DataType.Date)]
+      public DateTime? DateUpdated { get; set; }
         
 
     }
