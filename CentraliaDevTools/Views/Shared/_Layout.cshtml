@@ -38,14 +38,18 @@
                             </li>
                             @if (User?.IsInRole("Admins") ?? false)
                             {
-                                 <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="TicketStatus" asp-action="Index">Ticket Statuses</a>
-                                </li>    
+                                </li>
+
                             }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AdminMessages" asp-action="Index">Admin Access</a>
+                            </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>  
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
