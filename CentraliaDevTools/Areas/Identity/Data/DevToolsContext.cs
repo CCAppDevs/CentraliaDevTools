@@ -18,6 +18,7 @@ public class DevToolsContext : IdentityDbContext<DevToolsUser>
     public DbSet<TicketMember> TicketMembers { get; set; }
     public DbSet<Ticket> Ticket { get; set; }
     public DbSet<TicketStatus> TicketStatus { get; set; }
+    public DbSet<AdminMessage> AdminMessage { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
