@@ -28,19 +28,29 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="TeamProjects" asp-action="Index">Projects</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="TeamProjectMembers" asp-action="Index">Project Members</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index">Tickets</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="TicketMembers" asp-action="Index">Ticket Members</a>
-                            </li>
+
                             @if (User?.IsInRole("Admins") ?? false)
                             {
                                  <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="TicketStatus" asp-action="Index">Ticket Statuses</a>
                                 </li>    
+                            
+                                <li>
+                                    <select name = Admin>
+                                        <option>Admin</option>
+                                        <option> 
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="TicketMembers" asp-action="Index">Ticket Members</a>
+                                        </option>
+                                        <option>
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="TeamProjectMembers" asp-action="Index">Project Members</a>
+                                        </option>
+                                        <option>
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="TicketStatus" asp-action="Index">Ticket Statuses</a>
+                                        </option>
+                                    </select>
+                                </li>
                             }
                         }
                         <li class="nav-item">
