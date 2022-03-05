@@ -26,16 +26,16 @@
                 Description
             </th>
             <th>
-                CreatedOn
+                Created
             </th>
             <th>
-                DateUpdated
+                Updated
             </th>
             <th>
-                TicketMembers
+                Members
             </th>
                <th>
-                AssignUser
+                Assigned to
             </th>
             <th></th>
         </tr>
@@ -67,13 +67,13 @@
                <td>
                 @Html.DisplayFor(modelItem => item.AssignedUser)
             </td>
-             <td>
+             <td><font size ="-1">
                  <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                  <a asp-controller="TicketMembers" asp-action="Members" asp-route-id="@item.Id">Edit Members</a> |
                  <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                  <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                  <a asp-action="Toggle" asp-route-id="@item.Id">Close</a>
-             </td>
+                 </font size ="-1"></td>
         </tr>
 }
     </tbody>
@@ -95,14 +95,13 @@
                 Description
             </th>
             <th>
-                CreatedOn
+                Created
             </th>
             <th>
-                Date Last Closed
+                Closed
             </th>
-             <th>
-                TicketMembers
-            </th>
+            <th>Assigned to</th>
+
             <th></th>
         </tr>
     </thead>
@@ -127,19 +126,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateLastClosed)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketMembers)
-            </td>
              <td>
                 @Html.DisplayFor(modelItem => item.AssignedUser)
             </td>
-            <td>
+            <td><font size ="-1">
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-controller="TicketMembers" asp-action="Edit" asp-route-id="@item.Id">Edit Members</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                 <a asp-action="Toggle" asp-route-id="@item.Id">Open</a>
-            </td>
+            </font></td>
         </tr>
 }
 </table>
@@ -157,12 +153,12 @@
                 Description
             </th>
             <th>
-                Date Opened
+                Opened
             </th>
             <th>
-                Date Last Closed
+                Closed
             </th>
-            <th>Resolution Time</th>
+            <th>Duration</th>
             <th></th>
         </tr>
     </thead>
