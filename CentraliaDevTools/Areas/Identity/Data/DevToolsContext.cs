@@ -29,4 +29,7 @@ public class DevToolsContext : IdentityDbContext<DevToolsUser>
     }
 
 
+    public DbSet<CentraliaDevTools.Models.Message> Message { get; set; }
+
+
 }

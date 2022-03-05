@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentraliaDevTools.Migrations
 {
     [DbContext(typeof(DevToolsContext))]
-    partial class DevToolsContextModelSnapshot : ModelSnapshot
+    [Migration("20220305175206_MessaeClas")]
+    partial class MessaeClas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,9 +49,6 @@ namespace CentraliaDevTools.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("MessageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -79,8 +78,6 @@ namespace CentraliaDevTools.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MessageId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -90,32 +87,6 @@ namespace CentraliaDevTools.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("CentraliaDevTools.Models.Message", b =>
-                {
-                    b.Property<int>("MessageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"), 1L, 1);
-
-                    b.Property<string>("MessageText")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiverId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SenderId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("MessageId");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>
@@ -382,28 +353,6 @@ namespace CentraliaDevTools.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", b =>
-                {
-                    b.HasOne("CentraliaDevTools.Models.Message", null)
-                        .WithMany("ReceiverList")
-                        .HasForeignKey("MessageId");
-                });
-
-            modelBuilder.Entity("CentraliaDevTools.Models.Message", b =>
-                {
-                    b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId");
-
-                    b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId");
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>
                 {
                     b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Lead")
@@ -524,11 +473,6 @@ namespace CentraliaDevTools.Migrations
                     b.Navigation("OwnedProjects");
 
                     b.Navigation("TicketMembers");
-                });
-
-            modelBuilder.Entity("CentraliaDevTools.Models.Message", b =>
-                {
-                    b.Navigation("ReceiverList");
                 });
 
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>

@@ -176,7 +176,7 @@ namespace CentraliaDevTools.Controllers
 
                 // Add a new TicketMember entry with referencing appropriate ticket and member IDs
                 var user = await _userManager.GetUserAsync(User);
-                TicketMember tm = new TicketMember();
+                TicketMember tm = new();
 
 
                 tm.TicketId = ticket.Id; // ID of new ticket
