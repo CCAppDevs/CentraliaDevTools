@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CentraliaDevTools.styles.css" asp-append-version="true" />
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -27,21 +28,10 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="TeamProjects" asp-action="Index">Projects</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="TeamProjectMembers" asp-action="Index">Project Members</a>
-                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index">Tickets</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="TicketMembers" asp-action="Index">Ticket Members</a>
-                            </li>
-                            @if (User?.IsInRole("Admins") ?? false)
-                            {
-                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="TicketStatus" asp-action="Index">Ticket Statuses</a>
-                                </li>    
-                            }
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -51,7 +41,34 @@
                 </div>
             </div>
         </nav>
+
+<!-- admin toolbar -->
+    @if (User?.IsInRole("Admins") ?? false)
+    {
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand">Administration Toolbar</a>
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text=dark" asp-area="" asp-controller="TeamProjectMembers" asp-action="Index">Project Members</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TicketMembers" asp-action="Index">Ticket Members</a>
+                        </li>
+                                
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TicketStatus" asp-action="Index">Manage Status List</a>
+                        </li>
+                    </ul>
+                </div>
+        </nav>
+    }
+
+<!-- end Admin Toolbar-->
     </header>
+
+    
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

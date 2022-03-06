@@ -26,20 +26,11 @@
                 Description
             </th>
             <th>
-                CreatedOn
+                Created
             </th>
             <th>
-                DateUpdated
+               Updated
             </th>
-            <th>
-                TicketMembers
-            </th>
-            @if ((User?.Identity?.IsAuthenticated ?? false))
-            {
-                <th>
-                    Controls
-                </th>    
-            }
         </tr>
     </thead>
     <tbody>
@@ -62,9 +53,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateUpdated)
-            </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.TicketMembers)
             </td>
             @if ((User?.Identity?.IsAuthenticated ?? false) &&
                 !(item.TicketMembers.Any(tm => tm.MemberId == user.Id)))
