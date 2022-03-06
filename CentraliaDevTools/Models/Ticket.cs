@@ -6,8 +6,11 @@ namespace CentraliaDevTools.Models
     {
         
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Location { get; set; }
+        [Required]
         public string Description { get; set; }
         public List<TicketMember> TicketMembers { get; set; }
         public string AssignedUserId { get; set; }
@@ -15,6 +18,7 @@ namespace CentraliaDevTools.Models
         public int TicketStatusId { get; set; }
         public TicketStatus TicketStatus { get; set; }
         [DataType(DataType.Date)]
+        [Required]
         public DateTime CreatedOn { get; set; }
         [DataType(DataType.Date)]
         public DateTime? DateLastClosed { get; set; }
