@@ -58,8 +58,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateUpdated)
             </td>
-               <td>
-                @Html.DisplayFor(modelItem => item.AssignedUser)
+            <td>
+                @Html.DisplayFor(modelItem => item.AssignedUser.UserName)
             </td>
              <td><font size ="-1">
                  <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -120,8 +120,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateLastClosed)
             </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.AssignedUser)
+            <td>
+                @Html.DisplayFor(modelItem => item.AssignedUser.UserName)
             </td>
             <td><font size ="-1">
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

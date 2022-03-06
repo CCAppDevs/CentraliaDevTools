@@ -124,11 +124,13 @@ namespace CentraliaDevTools.Controllers
                     ClosedTickets = _context.Ticket
                     .Include(t => t.TicketMembers)
                     .Include(t => t.TicketStatus)
+                    .Include(t => t.AssignedUser)
                     .Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id) && ticket.TicketStatusId == 2).ToList(),
 
                     OpenTickets = _context.Ticket
                     .Include(t => t.TicketMembers)
                     .Include(t => t.TicketStatus)
+                    .Include(t => t.AssignedUser)
                     .Where(ticket => ticket.TicketMembers.Any(m => m.MemberId == user.Id) && ticket.TicketStatusId == 1).ToList(),
             };
 
@@ -144,7 +146,7 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket.Include(t => t.TicketStatus)
+            var ticket = await _context.Ticket.Include(t => t.TicketStatus).Include(t => t.AssignedUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -209,6 +211,7 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
             ViewData["TicketStatusId"] = new SelectList(_statusContext.TicketStatus, "TicketStatusId", "Status");
+            ViewData["AssignedUserId"] = new SelectList(_statusContext.Users, "Id", "UserName");
             return View(ticket);
         }
 
@@ -217,7 +220,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn, DateLastClosed, DateUpdated, TicketMembers, TicketStatusId")] Ticket ticket, TicketMember ticketMember)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Description,CreatedOn, DateLastClosed, DateUpdated, TicketMembers, TicketStatusId, AssignedUserId")] Ticket ticket, TicketMember ticketMember)
         {
             if (id != ticket.Id)
             {
@@ -246,6 +249,7 @@ namespace CentraliaDevTools.Controllers
             }
             ViewData["TicketStatusId"] = new SelectList(_context.TicketStatus, "TicketStatusId", "Status", ticket.TicketStatusId);
             ViewData["TicketMembersId"] = new SelectList(_context.TicketMembers, "TicketMemberID", "MemberId", ticketMember.MemberId);
+            ViewData["AssignedUserId"] = new SelectList(_context.Users, "Id", "UserName", ticket.AssignedUserId);
             return View(ticket);
             
         }
@@ -258,7 +262,7 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket.Include(t => t.TicketStatus)
+            var ticket = await _context.Ticket.Include(t => t.TicketStatus).Include(t => t.AssignedUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
