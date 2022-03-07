@@ -4,7 +4,6 @@ namespace CentraliaDevTools.Models
 {
     public class Ticket
     {
-        
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
@@ -22,9 +21,9 @@ namespace CentraliaDevTools.Models
         public DateTime CreatedOn { get; set; }
         [DataType(DataType.Date)]
         public DateTime? DateLastClosed { get; set; }
-      //Made this a nullable field that way we only import a date once edited. - Jordan M
-      [DataType(DataType.Date)]
-      public DateTime? DateUpdated { get; set; }
+        //Made this a nullable field that way we only import a date once edited. - Jordan M
+        [DataType(DataType.Date)]
+        public DateTime? DateUpdated { get; set; }
         
 
     }

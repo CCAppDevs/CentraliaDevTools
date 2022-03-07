@@ -25,7 +25,7 @@ namespace CentraliaDevTools.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             // Filter tickets to just those that the currently logged in user is not a part of (in the TicketMembers list)
             var filteredContext = _context.Ticket.Include(t => t.TicketMembers);
