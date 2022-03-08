@@ -20,7 +20,7 @@ namespace CentraliaDevTools.Controllers
         {
             _context = context;
         }
-
+        [Authorize(Roles = "Admins")]
         // GET: TicketMembers
         public async Task<IActionResult> Index()
         {
@@ -138,7 +138,7 @@ namespace CentraliaDevTools.Controllers
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Id", ticketMember.TicketId);
             return View(ticketMember);
         }
-
+        [Authorize(Roles = "Admins")]
         // GET: TicketMembers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

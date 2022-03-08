@@ -253,7 +253,7 @@ namespace CentraliaDevTools.Controllers
             return View(ticket);
             
         }
-
+        [Authorize(Roles = "Admins")]
         // GET: Tickets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
