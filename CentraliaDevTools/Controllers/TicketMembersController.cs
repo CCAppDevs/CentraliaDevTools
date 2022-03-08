@@ -204,6 +204,41 @@ namespace CentraliaDevTools.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admins")]
+        // GET: TicketMembers/DeleteSpecificTicketMember/5
+        public async Task<IActionResult> DeleteSpecificTicketMember(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var ticketMember = await _context.TicketMembers
+                .Include(t => t.Member)
+                .Include(t => t.Ticket)
+                .FirstOrDefaultAsync(m => m.TicketMemberID == id);
+            if (ticketMember == null)
+            {
+                return NotFound();
+            }
+
+            // This is so that we can have the right value for the confirm action
+            ViewData["TicketMemberID"] = id;
+
+            return View(ticketMember);
+        }
+
+        // POST: TicketMembers/DeleteSpecificTicketMember/5
+        [HttpPost, ActionName("DeleteSpecificTicketMember")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteSpecificTicketMemberConfirmed(int id)
+        {
+            var ticketMember = await _context.TicketMembers.FindAsync(id);
+            _context.TicketMembers.Remove(ticketMember);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Members", "TicketMembers", new { id = ticketMember.TicketId });
+        }
+
         private bool TicketMemberExists(int id)
         {
             return _context.TicketMembers.Any(e => e.TicketMemberID == id);
