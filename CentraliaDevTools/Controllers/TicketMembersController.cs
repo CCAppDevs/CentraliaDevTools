@@ -111,7 +111,7 @@ namespace CentraliaDevTools.Controllers
 
                 _context.Add(ticketMember);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Members", "TicketMembers", new { id = id });
             }
             ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Name", ticketMember.MemberId);
             ViewData["TicketId"] = id;
