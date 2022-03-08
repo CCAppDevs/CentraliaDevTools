@@ -31,8 +31,8 @@
                 @Html.DisplayFor(modelItem => item.Member.UserName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.TicketMemberID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TicketMemberID">Details</a> |
+               @* <a asp-action="Edit" asp-route-id="@item.TicketMemberID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TicketMemberID">Details</a> |*@
                 <a asp-action="Delete" asp-route-id="@item.TicketMemberID">Delete</a>
             </td>
         </tr>
