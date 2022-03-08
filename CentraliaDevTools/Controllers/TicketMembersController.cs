@@ -35,6 +35,9 @@ namespace CentraliaDevTools.Controllers
                 return NotFound();
             }
             var devToolsContext = _context.TicketMembers.Include(t => t.Member).Include(t => t.Ticket).Where(t => t.TicketId == id);
+
+            ViewData["TicketId"] = id;
+
             return View(await devToolsContext.ToListAsync());
         }
 
@@ -66,6 +69,16 @@ namespace CentraliaDevTools.Controllers
             return View();
         }
 
+        // New create actions for specific tickets
+
+        // GET: TicketMembers/CreateMemberForTicket/5
+        public IActionResult CreateMemberForTicket(int id)
+        {
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "UserName");
+            ViewData["TicketId"] = id;
+            return View();
+        }
+
         // POST: TicketMembers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -81,6 +94,27 @@ namespace CentraliaDevTools.Controllers
             }
             ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Name", ticketMember.MemberId);
             ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Id", ticketMember.TicketId);
+            return View(ticketMember);
+        }
+
+        // POST: TicketMembers/CreateMemberForTicket/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateMemberForTicket(int id, [Bind("TicketMemberID,TicketId,MemberId")] TicketMember ticketMember)
+        {
+            if (ModelState.IsValid)
+            {
+                // Set the TicketId to the specific ticket automatically, since there is no field
+                ticketMember.TicketId = id;
+
+                _context.Add(ticketMember);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["MemberId"] = new SelectList(_context.Users, "Id", "Name", ticketMember.MemberId);
+            ViewData["TicketId"] = id;
             return View(ticketMember);
         }
 
