@@ -63,7 +63,9 @@
             </td>
              <td><font size ="-1">
                  <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                 <a asp-controller="TicketMembers" asp-action="Members" asp-route-id="@item.Id">Edit Members</a> |
+                 @if (User.IsInRole("Admins")) {
+                    <span><a asp-controller="TicketMembers" asp-action="Members" asp-route-id="@item.Id">Edit Members</a> |</span>
+                 }
                  <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                  <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                  <a asp-action="Toggle" asp-route-id="@item.Id">Close</a>
