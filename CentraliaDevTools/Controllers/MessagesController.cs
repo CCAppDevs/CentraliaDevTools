@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CentraliaDevTools.Data;
 using CentraliaDevTools.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CentraliaDevTools.Controllers
 {
+    [Authorize]
     public class MessagesController : Controller
     {
         private readonly DevToolsContext _context;
