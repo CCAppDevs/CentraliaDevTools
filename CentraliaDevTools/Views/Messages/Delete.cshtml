@@ -1,4 +1,4 @@
-﻿@model CentraliaDevTools.Models.Message
+@model CentraliaDevTools.Models.Message
 
 @{
     ViewData["Title"] = "Delete";
@@ -16,6 +16,18 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.MessageText)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateSent)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateSent)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsNew)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsNew)
         </dd>
     </dl>
     

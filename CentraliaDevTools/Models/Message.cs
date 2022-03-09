@@ -7,8 +7,13 @@ namespace CentraliaDevTools.Models
    {
       [Key]
       public int MessageId { get; set; }
+
+      [Required]
       public string MessageText { get; set; }
+
+      [DataType(DataType.Date)]
       public DateTime DateSent { get; set; }
+
       public bool IsNew { get; set; }
 
       public DevToolsUser Sender { get; set; }

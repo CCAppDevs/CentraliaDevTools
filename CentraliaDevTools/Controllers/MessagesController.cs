@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,7 +54,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MessageId,MessageText")] Message message)
+        public async Task<IActionResult> Create([Bind("MessageId,MessageText,DateSent,IsNew")] Message message)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MessageId,MessageText")] Message message)
+        public async Task<IActionResult> Edit(int id, [Bind("MessageId,MessageText,DateSent,IsNew")] Message message)
         {
             if (id != message.MessageId)
             {
