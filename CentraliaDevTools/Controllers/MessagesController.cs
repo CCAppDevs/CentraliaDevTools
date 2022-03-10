@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using CentraliaDevTools.Data;
 using CentraliaDevTools.Models;
 using Microsoft.AspNetCore.Authorization;
+using CentraliaDevTools.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace CentraliaDevTools.Controllers
 {
@@ -15,10 +17,12 @@ namespace CentraliaDevTools.Controllers
     public class MessagesController : Controller
     {
         private readonly DevToolsContext _context;
+        private readonly UserManager<DevToolsUser> _userManager;
 
-        public MessagesController(DevToolsContext context)
+        public MessagesController(DevToolsContext context, UserManager<DevToolsUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Messages
@@ -60,6 +64,10 @@ namespace CentraliaDevTools.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+
+                message.Sender = user;
+
                 _context.Add(message);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
