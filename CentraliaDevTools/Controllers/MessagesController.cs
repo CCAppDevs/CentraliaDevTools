@@ -28,7 +28,7 @@ namespace CentraliaDevTools.Controllers
         // GET: Messages
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Message.ToListAsync());
+            return View(await _context.Message.Include(m => m.Sender).ToListAsync());
         }
 
         // GET: Messages/Details/5
@@ -40,6 +40,7 @@ namespace CentraliaDevTools.Controllers
             }
 
             var message = await _context.Message
+                .Include(m => m.Sender)
                 .FirstOrDefaultAsync(m => m.MessageId == id);
             if (message == null)
             {
@@ -135,6 +136,7 @@ namespace CentraliaDevTools.Controllers
             }
 
             var message = await _context.Message
+                .Include(m => m.Sender)
                 .FirstOrDefaultAsync(m => m.MessageId == id);
             if (message == null)
             {
