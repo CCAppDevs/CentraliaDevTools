@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.IsNew)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sender)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsNew)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sender.UserName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.MessageId">Edit</a> |
