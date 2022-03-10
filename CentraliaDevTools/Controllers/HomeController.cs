@@ -35,11 +35,13 @@ namespace CentraliaDevTools.Controllers
                 ClosedTickets = _context.Ticket
                    .Include(t => t.TicketMembers)
                    .Include(t => t.TicketStatus)
+                   .Include(t => t.AssignedUser)
                    .Where(ticket => ticket.TicketStatusId == 2).ToList(),
 
                 OpenTickets = _context.Ticket
                    .Include(t => t.TicketMembers)
                    .Include(t => t.TicketStatus)
+                   .Include(t => t.AssignedUser)
                    .Where(ticket => ticket.TicketStatusId == 1).ToList(),
             };
 
