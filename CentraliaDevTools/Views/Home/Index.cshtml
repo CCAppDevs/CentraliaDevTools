@@ -17,6 +17,9 @@
                 Name
             </th>
             <th>
+                AssignedUser
+            </th>
+            <th>
                 Status
             </th>
             <th>
@@ -38,6 +41,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssignedUser.UserName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TicketStatus.Status)
