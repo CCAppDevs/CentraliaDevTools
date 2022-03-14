@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentraliaDevTools.Migrations
 {
     [DbContext(typeof(DevToolsContext))]
-    partial class DevToolsContextModelSnapshot : ModelSnapshot
+    [Migration("20220312074832_updatingMessageModelForRecieverId")]
+    partial class updatingMessageModelForRecieverId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,8 +143,7 @@ namespace CentraliaDevTools.Migrations
 
                     b.HasKey("ProjectMessageId");
 
-                    b.HasIndex("MessageId")
-                        .IsUnique();
+                    b.HasIndex("MessageId");
 
                     b.HasIndex("TeamProjectId");
 
@@ -276,8 +277,7 @@ namespace CentraliaDevTools.Migrations
 
                     b.HasKey("TicketMessageId");
 
-                    b.HasIndex("MessageId")
-                        .IsUnique();
+                    b.HasIndex("MessageId");
 
                     b.HasIndex("TicketId");
 
@@ -465,8 +465,8 @@ namespace CentraliaDevTools.Migrations
             modelBuilder.Entity("CentraliaDevTools.Models.ProjectMessage", b =>
                 {
                     b.HasOne("CentraliaDevTools.Models.Message", "Message")
-                        .WithOne("ProjectMessages")
-                        .HasForeignKey("CentraliaDevTools.Models.ProjectMessage", "MessageId")
+                        .WithMany()
+                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -544,8 +544,8 @@ namespace CentraliaDevTools.Migrations
             modelBuilder.Entity("CentraliaDevTools.Models.TicketMessage", b =>
                 {
                     b.HasOne("CentraliaDevTools.Models.Message", "Message")
-                        .WithOne("TicketMessages")
-                        .HasForeignKey("CentraliaDevTools.Models.TicketMessage", "MessageId")
+                        .WithMany()
+                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -624,11 +624,7 @@ namespace CentraliaDevTools.Migrations
 
             modelBuilder.Entity("CentraliaDevTools.Models.Message", b =>
                 {
-                    b.Navigation("ProjectMessages");
-
                     b.Navigation("ReceiverList");
-
-                    b.Navigation("TicketMessages");
                 });
 
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>

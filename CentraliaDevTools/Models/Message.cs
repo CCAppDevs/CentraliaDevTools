@@ -16,11 +16,16 @@ namespace CentraliaDevTools.Models
 
       public bool IsNew { get; set; }
 
+      public string ReceiverId { get; set; }
       public DevToolsUser Sender { get; set; }
 
       public DevToolsUser Receiver { get; set; }
       
       public List<DevToolsUser> ReceiverList { get; set; }
+
+      public ProjectMessage ProjectMessages { get; set; }
+
+      public TicketMessage TicketMessages { get; set; }
    }
 
    public class ProjectMessage

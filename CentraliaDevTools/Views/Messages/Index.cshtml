@@ -1,4 +1,4 @@
-@model IEnumerable<CentraliaDevTools.Models.Message>
+@model MessageIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -9,38 +9,101 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+    @if (User?.IsInRole("Admins") ?? false)
+        {
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MessageText)
+                New?
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateSent)
+                MessageID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsNew)
+                Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sender)
+                Sender
+            </th>
+            <th>
+                Receiver
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+            @foreach (var item in Model.AllMessages)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsNew)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MessageId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateSent)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sender.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Receiver.UserName)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.MessageId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.MessageId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.MessageId">Delete</a>
+                    </td>
+                </tr>
+            }
+        
+
+    </tbody>
+</table>
+}
+ @if (!User?.IsInRole("Admins") ?? false){
+     <table class="table">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MessageText)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateSent)
-            </td>
+            <th>
+                New?
+            </th>
+            <th>
+                MessageID
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Sender
+            </th>
+            <th>
+                Receiver
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.FilteredMessages) {
+        <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.IsNew)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.MessageId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateSent)
+            </td>
+
+            <td>
                 @Html.DisplayFor(modelItem => item.Sender.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Receiver.UserName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.MessageId">Edit</a> |
@@ -48,6 +111,9 @@
                 <a asp-action="Delete" asp-route-id="@item.MessageId">Delete</a>
             </td>
         </tr>
-}
+ }
+
+
     </tbody>
 </table>
+}

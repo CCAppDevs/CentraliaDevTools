@@ -4,6 +4,7 @@ using CentraliaDevTools.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentraliaDevTools.Migrations
 {
     [DbContext(typeof(DevToolsContext))]
-    partial class DevToolsContextModelSnapshot : ModelSnapshot
+    [Migration("20220311201939_updatedTicketMessageModel")]
+    partial class updatedTicketMessageModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +112,10 @@ namespace CentraliaDevTools.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReceiverId")
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReceiverId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SenderId")
@@ -118,7 +123,7 @@ namespace CentraliaDevTools.Migrations
 
                     b.HasKey("MessageId");
 
-                    b.HasIndex("ReceiverId");
+                    b.HasIndex("ReceiverId1");
 
                     b.HasIndex("SenderId");
 
@@ -141,8 +146,7 @@ namespace CentraliaDevTools.Migrations
 
                     b.HasKey("ProjectMessageId");
 
-                    b.HasIndex("MessageId")
-                        .IsUnique();
+                    b.HasIndex("MessageId");
 
                     b.HasIndex("TeamProjectId");
 
@@ -276,8 +280,7 @@ namespace CentraliaDevTools.Migrations
 
                     b.HasKey("TicketMessageId");
 
-                    b.HasIndex("MessageId")
-                        .IsUnique();
+                    b.HasIndex("MessageId");
 
                     b.HasIndex("TicketId");
 
@@ -451,7 +454,7 @@ namespace CentraliaDevTools.Migrations
                 {
                     b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Receiver")
                         .WithMany()
-                        .HasForeignKey("ReceiverId");
+                        .HasForeignKey("ReceiverId1");
 
                     b.HasOne("CentraliaDevTools.Areas.Identity.Data.DevToolsUser", "Sender")
                         .WithMany()
@@ -465,8 +468,8 @@ namespace CentraliaDevTools.Migrations
             modelBuilder.Entity("CentraliaDevTools.Models.ProjectMessage", b =>
                 {
                     b.HasOne("CentraliaDevTools.Models.Message", "Message")
-                        .WithOne("ProjectMessages")
-                        .HasForeignKey("CentraliaDevTools.Models.ProjectMessage", "MessageId")
+                        .WithMany()
+                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -544,8 +547,8 @@ namespace CentraliaDevTools.Migrations
             modelBuilder.Entity("CentraliaDevTools.Models.TicketMessage", b =>
                 {
                     b.HasOne("CentraliaDevTools.Models.Message", "Message")
-                        .WithOne("TicketMessages")
-                        .HasForeignKey("CentraliaDevTools.Models.TicketMessage", "MessageId")
+                        .WithMany()
+                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -624,11 +627,7 @@ namespace CentraliaDevTools.Migrations
 
             modelBuilder.Entity("CentraliaDevTools.Models.Message", b =>
                 {
-                    b.Navigation("ProjectMessages");
-
                     b.Navigation("ReceiverList");
-
-                    b.Navigation("TicketMessages");
                 });
 
             modelBuilder.Entity("CentraliaDevTools.Models.TeamProject", b =>

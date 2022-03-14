@@ -28,7 +28,29 @@ namespace CentraliaDevTools.Controllers
         // GET: Messages
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Message.Include(m => m.Sender).ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+
+            var messageviewModel = new MessageIndexViewModel
+            {
+                AllMessages = _context.Message.ToList(),
+
+               
+
+                FilteredMessages = _context.Message
+                    .Include(m => m.Sender)
+                    .Include(m => m.Receiver)
+                    .Where(message => message.Receiver.Id == user.Id || message.Sender.Id == user.Id).ToList(),
+               
+
+                TicketMessages = _context.TicketMessage
+                    .Include(m => m.TicketMessages)
+                    .Where(message => message.Receiver.Id == user.Id || message.Sender.Id == user.Id).ToList()
+
+                //    //ProjectMessages
+            };
+
+            return View(messageviewModel);
+            //return View();
         }
 
         // GET: Messages/Details/5
@@ -51,8 +73,26 @@ namespace CentraliaDevTools.Controllers
         }
 
         // GET: Messages/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var adminId = _context.Roles.Where(role => role.Name == "Admins").FirstOrDefault().Id.ToString();
+            var isAdmin = _context.Users.Where(user => _context.UserRoles.Any(role => role.RoleId == adminId && role.UserId == user.Id)).ToList();
+            var user = await _userManager.GetUserAsync(User);
+
+            for (int i = 0; i < isAdmin.Count; i++)
+            {
+                if (user.Id == isAdmin[i].Id) 
+                {
+                    //--This pulls all users.I Think this would be good for an admin role. -- \\
+                    ViewData["ReceiverId"] = new SelectList(_context.Users, "Id", "UserName");
+
+                }
+                else
+                {
+                    ViewData["ReceiverId"] = new SelectList(_context.Users.Where(user => _context.UserRoles.Any(role => role.RoleId == adminId && role.UserId == user.Id)), "Id", "UserName");
+                }
+            }
+            ViewData["TicketId"] = new SelectList(_context.Ticket, "Id", "Id");
             return View();
         }
 
@@ -61,14 +101,13 @@ namespace CentraliaDevTools.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MessageId,MessageText,DateSent,IsNew")] Message message)
+        public async Task<IActionResult> Create([Bind("MessageId,MessageText,DateSent,IsNew,ReceiverId")] Message message)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
 
                 message.Sender = user;
-
                 _context.Add(message);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

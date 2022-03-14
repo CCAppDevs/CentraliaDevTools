@@ -30,8 +30,7 @@ public class DevToolsContext : IdentityDbContext<DevToolsUser>
 
 
     public DbSet<CentraliaDevTools.Models.Message> Message { get; set; }
-    public DbSet<CentraliaDevTools.Models.ProjectMessage> ProjectMessage { get; set; }
-    public DbSet<CentraliaDevTools.Models.TicketMessage> TicketMessage { get; set; }
+    public DbSet<CentraliaDevTools.Models.Message> TicketMessage { get; set; }
 
 
 }
